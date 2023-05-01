@@ -111,6 +111,6 @@ io.on("connection", (socket) => {
     socket.broadcast.emit('ball', ball);
     })
 })
-server.listen(3000,()=>{
+server.listen(800 , ()=>{
     console.log('listening at 3000')
 })
