@@ -107,7 +107,7 @@ io.on("connection", (socket) => {
     }
     punk = { x1: 165 , x2: 165 };
     socket.broadcast.emit('punkClient', punk);
-    ball = { x: 250 , y: 250 , dx: 1, dy: 0.5 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
+    ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
     socket.broadcast.emit('ball', ball);
     })
 })
