@@ -1,4 +1,4 @@
-const app = require('express')
+const app = require('express')()
 const http = require('http')
 const server = http.createServer(app)
 const socket = require('socket.io')
