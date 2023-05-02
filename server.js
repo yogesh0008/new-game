@@ -83,13 +83,13 @@ io.on("connection", (socket) => {
     }
     if( ball.y - radiusOfBall <= 0 && ball.x >= 130 && ball.x <= 370)
     {
-        ball.score1 = ball.score1++;
-        ball.score1 = ball.score1 - 2;
+        ball.score1++;
+        ball.score1 = ball.score1/3;
     }
     if( ball.y + radiusOfBall >= 500 && ball.x >= 130 && ball.x <= 370)
     {
-        ball.score1 = ball.score1++;
-        ball.score1 = ball.score1 - 2;
+        ball.score1++;
+        ball.score1 = ball.score1/3;
     }
     
     socket.emit('ball',ball)
