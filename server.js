@@ -88,8 +88,8 @@ io.on("connection", (socket) => {
     }
     if( ball.y + radiusOfBall >= 500 && ball.x >= 130 && ball.x <= 370)
     {
-        ball.score1++;
-        ball.score1 = ball.score1/3;
+        ball.score2++;
+        ball.score2 = ball.score2/3;
     }
     
     socket.emit('ball',ball)
