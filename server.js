@@ -7,7 +7,7 @@ const io =  socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
 let socketId = { socket1: null , socket2: null};
 
 let punk = { x1: 165 , x2: 165 }
-let ball = { x: 250 , y: 250 , dx: 1 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false }
+let ball = { x: 250 , y: 250 , dx: 1 , dy: 0.5 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false }
 
 const radiusOfBall = 15;
 
@@ -107,7 +107,7 @@ io.on("connection", (socket) => {
     }
     punk = { x1: 165 , x2: 165 };
     socket.broadcast.emit('punkClient', punk);
-    ball = { x: 250 , y: 250 , dx: 1, dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
+    ball = { x: 250 , y: 250 , dx: 1, dy: 0.5 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
     socket.broadcast.emit('ball', ball);
     })
 })
