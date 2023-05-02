@@ -7,7 +7,7 @@ const io =  socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
 let socketId = { socket1: null , socket2: null};
 
 let punk = { x1: 165 , x2: 165 }
-let ball = { x: 250 , y: 250 , dx: 4, dy: 3 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false }
+let ball = { x: 250 , y: 250 , dx: 2, dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false }
 
 const radiusOfBall = 15;
 
@@ -42,13 +42,13 @@ io.on("connection", (socket) => {
     // })
 
     setInterval(() => {
-    if( ball.score1 == 200 || ball.score2 == 200 )
+    if( ball.score1 == 20000 || ball.score2 == 20000 )
     {
-        if(ball.score1 == 200)
+        if(ball.score1 == 20000)
         {
             ball.winMessageFor1 = true;
         }
-        else if( ball.score2 == 200 )
+        else if( ball.score2 == 20000 )
         {
             ball.winMessageFor2 = true;
         }
@@ -107,7 +107,7 @@ io.on("connection", (socket) => {
     }
     punk = { x1: 165 , x2: 165 };
     socket.broadcast.emit('punkClient', punk);
-    ball = { x: 250 , y: 250 , dx: 4, dy: 3 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
+    ball = { x: 250 , y: 250 , dx: 2, dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
     socket.broadcast.emit('ball', ball);
     })
 })
