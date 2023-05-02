@@ -2,7 +2,7 @@ const app = require('express')()
 const http = require('http')
 const server = http.createServer(app)
 const socket = require('socket.io')
-const io =  socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
+const io = socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
 
 let socketId = { socket1: null , socket2: null};
 
@@ -30,10 +30,40 @@ io.on("connection", (socket) => {
         }
     }
 
-    socket.on('punkClient',(abcd)=>{
-        punk = abcd
-        io.emit('punk', punk)
-    })
+    // socket.on('punkClient',(abcd)=>{
+    //     punk = abcd
+    //     io.emit('punk', punk)
+    // })
+
+    socket.on('moveLeft', () => {
+        console.log('keyPressed');
+        if ( socketId.socket1 === socket.id )
+        {
+          console.log(socketId.socket1);
+          if(punk.x1 > 0)
+          punk.x1 -= 10;
+          socket.emit("punk", punk);
+        }
+        else {
+          if( punk.x2 > 0)
+          punk.x2 -= 10;
+          socket.emit("punk", punk);
+        }
+    });
+    socket.on('moveRight', () => {
+        if (socketId.socket1 === socket.id)
+        {
+          if( punk.x1 < 350 )
+          punk.x1 += 10;
+          socket.emit("punk", punk);
+        } 
+        else 
+        {
+          if( punk.x2 < 350) 
+          punk.x2 += 10;
+          socket.emit("punk", punk);
+        }
+      });
 
     // socket.on('socketId',(ID)=>{
     //     socketId = ID;
@@ -52,6 +82,7 @@ io.on("connection", (socket) => {
         {
             ball.winMessageFor2 = true;
         }
+
     }
 
     if ( socketId.socket1 !== null && socketId.socket2 !== null )
@@ -83,15 +114,15 @@ io.on("connection", (socket) => {
     }
     if( ball.y - radiusOfBall <= 0 && ball.x >= 130 && ball.x <= 370)
     {
-        ball.score1 += 1/3;
+        ball.score1 += 1;
     }
     if( ball.y + radiusOfBall >= 500 && ball.x >= 130 && ball.x <= 370)
     {
-        ball.score2 += 1/3;
+        ball.score2 += 1;
     }
-    
+
     socket.emit('ball',ball)
-      
+    
     }, 10);
 
 
