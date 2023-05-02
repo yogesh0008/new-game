@@ -36,10 +36,8 @@ io.on("connection", (socket) => {
     // })
 
     socket.on('moveLeft', () => {
-        console.log('keyPressed');
         if ( socketId.socket1 === socket.id )
         {
-          console.log(socketId.socket1);
           if(punk.x1 > 0)
           punk.x1 -= 10;
           socket.emit("punk", punk);
