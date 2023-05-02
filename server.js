@@ -30,7 +30,7 @@ io.on("connection", (socket) => {
         }
     }
 
-    // socket.on('punkClient',(abcd)=>{
+    // socket.on('punk',(abcd)=>{
     //     punk = abcd
     //     io.emit('punk', punk)
     // })
@@ -40,12 +40,12 @@ io.on("connection", (socket) => {
         {
           if(punk.x1 > 0)
           punk.x1 -= 10;
-          socket.emit("punk", punk);
+          io.emit("punk", punk);
         }
         else {
           if( punk.x2 > 0)
           punk.x2 -= 10;
-          socket.emit("punk", punk);
+          io.emit("punk", punk);
         }
     });
     socket.on('moveRight', () => {
@@ -53,13 +53,13 @@ io.on("connection", (socket) => {
         {
           if( punk.x1 < 350 )
           punk.x1 += 10;
-          socket.emit("punk", punk);
+          io.emit("punk", punk);
         } 
         else 
         {
           if( punk.x2 < 350) 
           punk.x2 += 10;
-          socket.emit("punk", punk);
+          io.emit("punk", punk);
         }
       });
 
@@ -135,7 +135,7 @@ io.on("connection", (socket) => {
         socketId.socket2=null
     }
     punk = { x1: 165 , x2: 165 };
-    socket.broadcast.emit('punkClient', punk);
+    socket.broadcast.emit('punk', punk);
     ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
     socket.broadcast.emit('ball', ball);
     })
