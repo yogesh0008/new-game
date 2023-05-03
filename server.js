@@ -32,11 +32,6 @@ io.on("connection", (socket) => {
         }
     }
 
-    // socket.on('punk',(abcd)=>{
-    //     punk = abcd
-    //     io.emit('punk', punk)
-    // })
-
     socket.on('moveLeft', () => {
         if ( socketId.socket1 === socket.id )
         {
@@ -50,6 +45,7 @@ io.on("connection", (socket) => {
           io.emit("punk", punk);
         }
     });
+    
     socket.on('moveRight', () => {
         if (socketId.socket1 === socket.id)
         {
@@ -65,16 +61,11 @@ io.on("connection", (socket) => {
         }
       });
 
-    // socket.on('socketId',(ID)=>{
-    //     socketId = ID;
-    //     console.log('hello');
-    //     io.emit('socketId', socketId)
-    // })
-
     if( intervalId )
     {
         clearInterval(intervalId);
     }
+    
     intervalId = setInterval(() => {
     if( ball.score1 == 20000 || ball.score2 == 20000 )
     {
@@ -134,7 +125,6 @@ io.on("connection", (socket) => {
     {
         ball.x += ball.dx;
         ball.y += ball.dy;
-        console.log(ball.dx , ball.dy);
     }
 
     socket.emit('ball',ball)
