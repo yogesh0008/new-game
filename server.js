@@ -11,6 +11,8 @@ let ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessag
 
 const radiusOfBall = 15;
 
+let intervalId = null;
+
 const canvas = { width: 500 , height: 500 }
 
 io.on("connection", (socket) => {
@@ -69,7 +71,11 @@ io.on("connection", (socket) => {
     //     io.emit('socketId', socketId)
     // })
 
-    setInterval(() => {
+    if( intervalId )
+    {
+        clearInterval(intervalId);
+    }
+    intervalId = setInterval(() => {
     if( ball.score1 == 20000 || ball.score2 == 20000 )
     {
         if(ball.score1 == 20000)
@@ -83,33 +89,38 @@ io.on("connection", (socket) => {
 
     }
 
-    if ( socketId.socket1 !== null && socketId.socket2 !== null )
-    {
-        ball.x += ball.dx;
-        ball.y += ball.dy;
-    }
-    if (ball.x + radiusOfBall > canvas.width || ball.x - radiusOfBall < 0) 
+    // Check if ball is going out of bounds on left or right side
+    if (ball.x + ball.dx > canvas.width - radiusOfBall || ball.x + ball.dx < radiusOfBall) 
     {
         ball.dx = -ball.dx;
     }
-    if( ball.y + radiusOfBall >= 450  || ball.y - radiusOfBall >= 450)
-    {
-        if(ball.x + radiusOfBall >= punk.x2 - 2 && ball.x + radiusOfBall <= punk.x2 + 152)
-        {
-            ball.dy = -ball.dy;
-        }
-    }
-    if( ball.y - radiusOfBall <= 30 || ball.y + radiusOfBall == 30)
-    {
-        if(ball.x + radiusOfBall >= punk.x1 - 2 && ball.x + radiusOfBall <= punk.x1 + 152)
-        {
-            ball.dy = -ball.dy;
-        }
-    }
-    if (ball.y - radiusOfBall < 0 || ball.y + radiusOfBall > canvas.height) 
+  
+    // Check if ball is going out of bounds on top or bottom side
+    if (ball.y + ball.dy > canvas.height - radiusOfBall || ball.y + ball.dy < radiusOfBall) 
     {
         ball.dy = -ball.dy;
     }
+  
+    // Check if ball is colliding with punk1
+    if (ball.y + ball.dy < 30 + radiusOfBall) 
+    {
+        if (ball.x + radiusOfBall > punk.x1 && ball.x - radiusOfBall < punk.x1 + 150) 
+        {
+            ball.dy = -ball.dy;
+            ball.y = 30 + radiusOfBall;
+        }
+    }
+  
+    // Check if ball is colliding with punk2
+    if (ball.y + ball.dy > canvas.height - 30 - radiusOfBall) 
+    {
+        if (ball.x + radiusOfBall > punk.x2 && ball.x - radiusOfBall < punk.x2 + 150) 
+        {
+            ball.dy = -ball.dy;
+            ball.y = canvas.height - 30 - radiusOfBall;
+        }
+    }
+  
     if( ball.y - radiusOfBall <= 0 && ball.x >= 130 && ball.x <= 370)
     {
         ball.score1 += 1;
@@ -119,9 +130,17 @@ io.on("connection", (socket) => {
         ball.score2 += 1;
     }
 
+    if ( socketId.socket1 !== null && socketId.socket2 !== null )
+    {
+        ball.x += ball.dx;
+        ball.y += ball.dy;
+        console.log(ball.dx , ball.dy);
+    }
+
     socket.emit('ball',ball)
     
     }, 10);
+
 
 
     socket.on('disconnect',()=>{
