@@ -133,7 +133,6 @@ io.on("connection", (socket) => {
     {
         ball.x += ball.dx;
         ball.y += ball.dy;
-        console.log(ball.dx , ball.dy);
     }
 
     io.emit('ball',ball)
