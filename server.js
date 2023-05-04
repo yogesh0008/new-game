@@ -72,12 +72,12 @@ io.on("connection", (socket) => {
         if(ball.score1 == 5 )
         {
             // ball.winMessageFor1 = true;
-            whoWin = 'Player 1 Win';
+            whoWin = 'Player 2 Win';
             io.emit('message' , whoWin);
         }
         else if( ball.score2 == 5 )
         {
-            whoWin = 'Player 2 Win';
+            whoWin = 'Player 1 Win';
             io.emit('message' , whoWin);
         }
     }
