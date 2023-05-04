@@ -7,10 +7,10 @@ const io = socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
 let socketId = { socket1: null , socket2: null};
 
 let punk = { x1: 165 , x2: 165 }
-let ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false }
+let ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 }
 
 const radiusOfBall = 15;
-
+let whoWin = '';
 let intervalId = null;
 
 const canvas = { width: 500 , height: 500 }
@@ -31,11 +31,6 @@ io.on("connection", (socket) => {
             socket.emit('socketId' , socketId);
         }
     }
-
-    // socket.on('punk',(abcd)=>{
-    //     punk = abcd
-    //     io.emit('punk', punk)
-    // })
 
     socket.on('moveLeft', () => {
         if ( socketId.socket1 === socket.id )
@@ -63,28 +58,29 @@ io.on("connection", (socket) => {
           punk.x2 += 10;
           io.emit("punk", punk);
         }
-      });
+    });
 
-    // socket.on('socketId',(ID)=>{
-    //     socketId = ID;
-    //     console.log('hello');
-    //     io.emit('socketId', socketId)
-    // })
+    if( whoWin == '' )
+    {
 
     if( intervalId )
     {
         clearInterval(intervalId);
     }
+
     intervalId = setInterval(() => {
-    if( ball.score1 == 20000 || ball.score2 == 20000 )
+    if( ball.score1 == 1 || ball.score2 == 1 )
     {
-        if(ball.score1 == 20000)
+        if(ball.score1 == 1)
         {
-            ball.winMessageFor1 = true;
+            // ball.winMessageFor1 = true;
+            whoWin = 'Player 1 Win';
+            io.emit('message' , whoWin);
         }
-        else if( ball.score2 == 20000 )
+        else if( ball.score2 == 1 )
         {
-            ball.winMessageFor2 = true;
+            whoWin = 'Player 2 Win';
+            io.emit('message' , whoWin);
         }
     }
 
@@ -119,7 +115,7 @@ io.on("connection", (socket) => {
             ball.y = canvas.height - 30 - radiusOfBall;
         }
     }
-  
+
     if( ball.y - radiusOfBall <= 0 && ball.x >= 130 && ball.x <= 370)
     {
         ball.score1 += 1;
@@ -139,6 +135,8 @@ io.on("connection", (socket) => {
     
     }, 10);
 
+    }
+
 
 
     socket.on('disconnect',()=>{
@@ -151,6 +149,8 @@ io.on("connection", (socket) => {
     {
         socketId.socket2=null
     }
+    whoWin = '';
+    socket.broadcast.emit('message' , whoWin);
     punk = { x1: 165 , x2: 165 };
     socket.broadcast.emit('punk', punk);
     ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
