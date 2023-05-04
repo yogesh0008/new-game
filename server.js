@@ -107,7 +107,7 @@ io.on("connection", (socket) => {
     }
   
     // Check if ball is colliding with punk2
-    if (ball.y + ball.dy > canvas.height - 30 - radiusOfBall) 
+    if (ball.y + ball.dy > canvas.height - 30 + radiusOfBall) 
     {
         if (ball.x + radiusOfBall > punk.x2 && ball.x - radiusOfBall < punk.x2 + 150) 
         {
