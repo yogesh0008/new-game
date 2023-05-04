@@ -7,7 +7,7 @@ const io = socket(server,{ cors: { origin: '*' , methods: ["GET", "POST"],},})
 let socketId = { socket1: null , socket2: null};
 
 let punk = { x1: 165 , x2: 165 }
-let ball = { x: 250 , y: 250 , dx: 3 , dy: 2 , score1: 0 , score2: 0 }
+let ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 }
 
 const radiusOfBall = 15;
 let whoWin = '';
@@ -60,24 +60,22 @@ io.on("connection", (socket) => {
         }
     });
 
-    if( whoWin == '' )
-    {
-
     if( intervalId )
     {
         clearInterval(intervalId);
+
     }
 
     intervalId = setInterval(() => {
-    if( ball.score1 == 15 || ball.score2 == 15 )
+    if( ball.score1 == 1 || ball.score2 == 1 )
     {
-        if(ball.score1 == 15)
+        if(ball.score1 == 1 )
         {
             // ball.winMessageFor1 = true;
             whoWin = 'Player 1 Win';
             io.emit('message' , whoWin);
         }
-        else if( ball.score2 == 15 )
+        else if( ball.score2 == 1 )
         {
             whoWin = 'Player 2 Win';
             io.emit('message' , whoWin);
@@ -131,12 +129,15 @@ io.on("connection", (socket) => {
         ball.y += ball.dy;
     }
 
-    io.emit('ball',ball)
-    
-    }, 10);
-
+    if( whoWin != '' )
+    {
+        return;
+        
     }
 
+    io.emit('ball',ball);
+    
+    }, 10);
 
 
     socket.on('disconnect',()=>{
@@ -153,7 +154,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit('message' , whoWin);
     punk = { x1: 165 , x2: 165 };
     socket.broadcast.emit('punk', punk);
-    ball = { x: 250 , y: 250 , dx: 3 , dy: 2 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
+    ball = { x: 250 , y: 250 , dx: 2 , dy: 1 , score1: 0 , score2: 0 , winMessageFor1: false , winMessageFor2: false };
     socket.broadcast.emit('ball', ball);
     })
 })
